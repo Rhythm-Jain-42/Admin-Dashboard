@@ -1,12 +1,12 @@
 "use client";
 
+import { useContext } from "react";
+import { GlobalContext } from "@/context";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { TbBrandProducthunt } from "react-icons/tb";
 import { PiUsersFourLight } from "react-icons/pi";
-import { useContext } from "react";
-import { GlobalContext } from "@/context";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const menuItems = [
   {
@@ -30,8 +30,13 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
-  const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
+  const { sideBarOpen } = useContext(GlobalContext);
   const pathName = usePathname();
+  const router = useRouter();
+
+  const handlenavigate = (getMenuItem) => {
+    router.push(getMenuItem.path);
+  };
 
   return (
     <aside
@@ -51,6 +56,7 @@ export default function Sidebar() {
               {menuItems.map((menuItem) => (
                 <li key={menuItem.id}>
                   <label
+                  onClick={() => handlenavigate(menuItem)}
                     className={`group relative cursor-pointer flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark 
                              ${pathName.includes(menuItem.id) && "bg-graydark"}
                             `}
