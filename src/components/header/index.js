@@ -8,9 +8,12 @@ export default function Header() {
   const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
 
   const { status } = useSession();
+  const router = useRouter();
 
   console.log(status);
-
+  useEffect(() => {
+    if (status === "authenticated") router.push("/");
+  }, [status]);
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow">
       <div className="flex flex-grow items-center gap-2 justify-end py-4 px-4 shadow md:px-6 2xl:px-11">

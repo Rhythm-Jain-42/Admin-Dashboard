@@ -7,6 +7,7 @@ import { TbBrandProducthunt } from "react-icons/tb";
 import { PiUsersFourLight } from "react-icons/pi";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const menuItems = [
   {
@@ -33,8 +34,13 @@ export default function Sidebar() {
   const { sideBarOpen } = useContext(GlobalContext);
   const pathName = usePathname();
   const router = useRouter();
+  const { status } = useSession();
 
   const handlenavigate = (getMenuItem) => {
+    if (status === "unauthenticated") {
+      router.push("/unauth-page");
+      return;
+    }
     router.push(getMenuItem.path);
   };
 
@@ -56,7 +62,7 @@ export default function Sidebar() {
               {menuItems.map((menuItem) => (
                 <li key={menuItem.id}>
                   <label
-                  onClick={() => handlenavigate(menuItem)}
+                    onClick={() => handlenavigate(menuItem)}
                     className={`group relative cursor-pointer flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark 
                              ${pathName.includes(menuItem.id) && "bg-graydark"}
                             `}

@@ -1,16 +1,28 @@
-'use client'
-import { createContext,  useState } from "react";
+"use client";
+import { useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
+import { createContext, useEffect, useState } from "react";
+import { PulseLoader } from "react-spinners";
 
+export const GlobalContext = createContext(null);
 
-export const GlobalContext = createContext(null)
+export default function GlobalState({ children }) {
+  const [sideBarOpen, setSideBarOpen] = useState(false);
+  const { status } = useSession();
+  const pathName = usePathname();
+  const router = useRouter();
 
-export default function GlobalState({children}){
+  useEffect(() => {
+    if (
+      status === "unauthenticated" &&
+      pathName.includes("/" || "/products" || "/visitors")
+    )
+      router.push("/unauth-page");
+  }, [status]);
 
-    const [sideBarOpen, setSideBarOpen] = useState(false)
-
-    return (
-        <GlobalContext.Provider value={{ sideBarOpen, setSideBarOpen }}>
-          {children}
-        </GlobalContext.Provider>
-      );
-}    
+  return (
+    <GlobalContext.Provider value={{ sideBarOpen, setSideBarOpen }}>
+      {children}
+    </GlobalContext.Provider>
+  );
+}
