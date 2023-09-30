@@ -1,10 +1,10 @@
 "use client";
 
-import { useContext } from "react";
-import { GlobalContext } from "@/context";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { TbBrandProducthunt } from "react-icons/tb";
 import { PiUsersFourLight } from "react-icons/pi";
+import { useContext } from "react";
+import { GlobalContext } from "@/context";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -31,24 +31,25 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
-  const { sideBarOpen } = useContext(GlobalContext);
+  const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
+  const {status} = useSession()
+
   const pathName = usePathname();
   const router = useRouter();
-  const { status } = useSession();
 
   const handlenavigate = (getMenuItem) => {
-    if (status === "unauthenticated") {
-      router.push("/unauth-page");
-      return;
+    if(status === 'unauthenticated') {
+      router.push('/unauth-page')
+      return
     }
     router.push(getMenuItem.path);
   };
 
   return (
     <aside
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-red-400 duration-300 ease-linear lg:static lg:translate-x-0
-  ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
-  `}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear lg:static lg:translate-x-0
+    ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
+    `}
     >
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <Link href={"/"} className="text-[40px] text-white">

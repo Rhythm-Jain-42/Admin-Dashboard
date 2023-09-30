@@ -1,29 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../FormControls/button";
 import Modal from "../Modal";
-import { productFormControls } from "@/utils/config";
+import { visiorsFormControls } from "@/utils/config";
 import { useRouter } from "next/navigation";
 
-const intialFormData = {
-  name: "",
-  price: "",
+const initialFormData = {
   visitors: 0,
-  sales: 0,
+  location: "",
+  device: "",
+  premiumUserNo: 0,
   month: "",
 };
 
-export default function ProductLayout({ children }) {
+export default function VisitorsLayout({ children }) {
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState(intialFormData);
-
+  const [formData, setFormData] = useState(initialFormData);
   const router = useRouter();
 
-  console.log(formData);
-
-  async function handleAddProduct() {
-    const res = await fetch("/api/product/add-product", {
+  async function handleAddVisitors() {
+    const res = await fetch("/api/visitors/add-visitor", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,27 +30,29 @@ export default function ProductLayout({ children }) {
 
     const data = await res.json();
 
+    console.log(data);
+
     if (data && data.success) {
-      setFormData(intialFormData);
+      setFormData(initialFormData);
       setShowModal(false);
       router.refresh();
     } else {
-      setFormData(intialFormData);
+      setFormData(initialFormData);
       setShowModal(false);
     }
   }
 
   return (
     <div>
-      <Button onClick={() => setShowModal(true)} text={"Add New Product"} />
+      <Button onClick={() => setShowModal(true)} text={"Add Visitors Info"} />
       {children}
       <Modal
         show={showModal}
         setShow={setShowModal}
         formData={formData}
         setFormData={setFormData}
-        formControls={productFormControls}
-        onAdd={handleAddProduct}
+        formControls={visiorsFormControls}
+        onAdd={handleAddVisitors}
       />
     </div>
   );

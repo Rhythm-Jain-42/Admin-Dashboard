@@ -15,10 +15,10 @@ export async function POST(req) {
         message: "User registered",
       });
     } else {
-      return NextResponse.json({
-        success: false,
-        message: "failed to register the user ! Please try again",
-      });
+        return NextResponse.json({
+            success: false,
+            message: "failed to register the user ! Please try again",
+          });  
     }
   } catch (e) {
     console.log(e);
